@@ -16,7 +16,7 @@ namespace Mvc.App.ViewModels
         [StringLength(200, ErrorMessage = "O campo {0} deve conter entre {2} e {1} caracteres", MinimumLength = 10)]
         public string Descricao { get; set; }
 
-        //public IFormFile ImagemUpload { get; set; }
+        public IFormFile ImagemUpload { get; set; }
 
         public string Imagem { get; set; }
 
@@ -31,6 +31,8 @@ namespace Mvc.App.ViewModels
         public bool Ativo { get; set; }
 
         public FornecedorViewModel Fornecedor { get; set; }
+
+        public IEnumerable<FornecedorViewModel> Fornecedores { get; set; }
 
         [Display(Name = "Fornecedor")]
         [Required(ErrorMessage = "O Campo {0} é obrigatório")]

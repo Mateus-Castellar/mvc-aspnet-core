@@ -25,11 +25,11 @@ namespace Mvc.App.Controllers
 
         public async Task<IActionResult> Details(Guid id)
         {
-            var fornecedorViewModel = await ObterFornecedorEndereco(id);
+            var fornecedor = await ObterFornecedorEndereco(id);
 
-            if (fornecedorViewModel is null) return NotFound();
+            if (fornecedor is null) return NotFound();
 
-            return View(fornecedorViewModel);
+            return View(fornecedor);
         }
 
         public IActionResult Create()
@@ -50,11 +50,11 @@ namespace Mvc.App.Controllers
 
         public async Task<IActionResult> Edit(Guid id)
         {
-            var fornecedorViewModel = await ObterFornecedorProdutosEndereco(id);
+            var fornecedor = await ObterFornecedorProdutosEndereco(id);
 
-            if (fornecedorViewModel is null) return NotFound();
+            if (fornecedor is null) return NotFound();
 
-            return View(fornecedorViewModel);
+            return View(fornecedor);
         }
 
         [HttpPost]
@@ -72,20 +72,20 @@ namespace Mvc.App.Controllers
 
         public async Task<IActionResult> Delete(Guid id)
         {
-            var fornecedorViewModel = await ObterFornecedorEndereco(id);
+            var fornecedor = await ObterFornecedorEndereco(id);
 
-            if (fornecedorViewModel is null) return NotFound();
+            if (fornecedor is null) return NotFound();
 
-            return View(fornecedorViewModel);
+            return View(fornecedor);
         }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var fornecedorViewModel = await ObterFornecedorEndereco(id);
+            var fornecedor = await ObterFornecedorEndereco(id);
 
-            if (fornecedorViewModel is null) return NotFound();
+            if (fornecedor is null) return NotFound();
 
             await _fornecedorRepository.Remover(id);
 
