@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Mvc.App.Extensions;
+using System.ComponentModel.DataAnnotations;
 
 namespace Mvc.App.ViewModels
 {
@@ -21,6 +22,7 @@ namespace Mvc.App.ViewModels
 
         public string Imagem { get; set; }
 
+        [Moeda]
         [Required(ErrorMessage = "O Campo {0} é obrigatório")]
         public decimal Valor { get; set; }
 
