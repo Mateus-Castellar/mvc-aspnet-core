@@ -25,6 +25,7 @@ namespace Mvc.Data.Repository
 
         public async Task Atualizar(T entity)
         {
+            _context.Entry(entity).State = EntityState.Modified;
             _dbSet.Update(entity);
             await SaveChanges();
         }

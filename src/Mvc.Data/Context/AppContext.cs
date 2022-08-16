@@ -5,7 +5,11 @@ namespace Mvc.Data.Context
 {
     public class AppMvcContext : DbContext
     {
-        public AppMvcContext(DbContextOptions<AppMvcContext> context) : base(context) { }
+        public AppMvcContext(DbContextOptions<AppMvcContext> context) : base(context)
+        {
+            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            ChangeTracker.AutoDetectChangesEnabled = false;
+        }
 
         public DbSet<Produto> Produtos { get; set; }
         public DbSet<Fornecedor> Fornecedores { get; set; }

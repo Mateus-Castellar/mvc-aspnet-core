@@ -76,9 +76,29 @@ namespace Mvc.App.Controllers
         {
             if (id != produtoViewModel.Id) return NotFound();
 
+            var produtoAtualizado = await ObterProduto(id);
+
+            produtoViewModel.Fornecedor = produtoAtualizado.Fornecedor;
+            produtoViewModel.Imagem = produtoAtualizado.Imagem;
+
             if (ModelState.IsValid is false) return View(produtoViewModel);
 
-            await _produtoRepository.Atualizar(_mapper.Map<Produto>(produtoViewModel));
+            if (produtoViewModel.ImagemUpload is not null)
+            {
+                var imgPrefixo = Guid.NewGuid() + "_";
+
+                if (await UploadArquivo(produtoViewModel.ImagemUpload, imgPrefixo) is false)
+                    return View(produtoViewModel);
+
+                produtoAtualizado.Imagem = imgPrefixo + produtoViewModel.ImagemUpload.FileName;
+            }
+
+            produtoAtualizado.Nome = produtoViewModel.Nome;
+            produtoAtualizado.Descricao = produtoViewModel.Descricao;
+            produtoAtualizado.Valor = produtoViewModel.Valor;
+            produtoAtualizado.Ativo = produtoViewModel.Ativo;
+
+            await _produtoRepository.Atualizar(_mapper.Map<Produto>(produtoAtualizado));
 
             return RedirectToAction(nameof(Index));
         }
