@@ -48,6 +48,14 @@ namespace Mvc.App.Controllers
 
             if (ModelState.IsValid is false) return View(produtoViewModel);
 
+            var imgPrefixo = Guid.NewGuid() + "_";
+
+            if (await UploadArquivo(produtoViewModel.ImagemUpload, imgPrefixo) is false)
+                return View(produtoViewModel);
+
+            //passa o valor para o campo que é persistido na base de dados
+            produtoViewModel.Imagem = imgPrefixo + produtoViewModel.ImagemUpload.FileName;
+
             await _produtoRepository.Adicionar(_mapper.Map<Produto>(produtoViewModel));
 
             return RedirectToAction(nameof(Index));
@@ -117,6 +125,28 @@ namespace Mvc.App.Controllers
                 _fornecedorRepository.ObterTodos());
 
             return produto;
+        }
+
+        private async Task<bool> UploadArquivo(IFormFile arquivo, string imgPrefixo)
+        {
+            if (arquivo.Length <= 0) return false;
+
+            //caminho para salvar arquivo
+            var path = Path.Combine(Directory.GetCurrentDirectory(),
+                "wwwroot/imagens", imgPrefixo + arquivo.FileName);
+
+            if (System.IO.File.Exists(path))
+            {
+                ModelState.AddModelError(string.Empty, "Já possui uma imagem com este nome");
+                return false;
+            }
+
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                await arquivo.CopyToAsync(stream);
+            }
+
+            return true;
         }
 
         #endregion
