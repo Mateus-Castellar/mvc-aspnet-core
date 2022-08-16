@@ -7,10 +7,10 @@
 <h3>@ViewData["Titulo"]</h3>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <img src="~/imagens/@Model.Imagem" alt="@Model.Imagem" style="width: 300px; height: 428px" />
+    <div class="col-md-8">
+        <img src="~/imagens/@Model.Imagem" alt="@Model.Imagem" style="width: 500px; height: 428px" />
     </div>
-    <div class="col-md-6">
+    <div class="col-md-4">
         <dl>
             <dt>
                 @Html.DisplayNameFor(model => model.FornecedorId)
@@ -51,7 +51,7 @@
         </dl>
 
         <div>
-            <a supress-by-claim-name="Produto" supress-by-claim-value="Editar" class="btn btn-dark" sp-action="Edit" asp-route-id="@Model.Id">Editar</a>
+            <a class="btn btn-dark" asp-action="Edit" asp-route-id="@Model.Id">Editar</a>
             <a class="btn btn-info" href="javascript:window.history.back();">Voltar</a>
         </div>
     </div>
