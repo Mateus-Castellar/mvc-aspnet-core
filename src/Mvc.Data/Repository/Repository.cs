@@ -14,6 +14,7 @@ namespace Mvc.Data.Repository
         public Repository(AppMvcContext context)
         {
             _context = context;
+            _dbSet = context.Set<T>();
         }
 
         public async Task Adicionar(T entity)
