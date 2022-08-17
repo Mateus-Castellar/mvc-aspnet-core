@@ -53,6 +53,10 @@ namespace Mvc.App.Controllers
 
             await _fornecedorService.Adicionar(_mapper.Map<Fornecedor>(fornecedorViewModel));
 
+            if (OperacaoValida() is false) return View(fornecedorViewModel);
+
+            TempData["Sucesso"] = "Fornecedor cadastrado com sucesso";
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -77,6 +81,8 @@ namespace Mvc.App.Controllers
 
             await _fornecedorService.Atualizar(_mapper.Map<Fornecedor>(fornecedorViewModel));
 
+            if (OperacaoValida() is false) return View(fornecedorViewModel);
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -100,6 +106,8 @@ namespace Mvc.App.Controllers
             if (fornecedor is null) return NotFound();
 
             await _fornecedorService.Remover(id);
+
+            if (OperacaoValida() is false) return View(fornecedor);
 
             return RedirectToAction(nameof(Index));
         }
@@ -136,6 +144,8 @@ namespace Mvc.App.Controllers
                 return PartialView("_AtualizarEndereco", fornecedorViewModel);
 
             await _fornecedorService.AtualizarEndereco(_mapper.Map<Endereco>(fornecedorViewModel.Endereco));
+
+            if (OperacaoValida() is false) return View(fornecedorViewModel);
 
             var url = Url.Action("ObterEndereco", "Fornecedores",
                 new { id = fornecedorViewModel.Endereco.FornecedorId });

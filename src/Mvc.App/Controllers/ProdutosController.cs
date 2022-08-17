@@ -65,6 +65,8 @@ namespace Mvc.App.Controllers
 
             await _produtoService.Adicionar(_mapper.Map<Produto>(produtoViewModel));
 
+            if (OperacaoValida() is false) return View(produtoViewModel);
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -109,6 +111,8 @@ namespace Mvc.App.Controllers
 
             await _produtoService.Atualizar(_mapper.Map<Produto>(produtoAtualizado));
 
+            if (OperacaoValida() is false) return View(produtoViewModel);
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -132,6 +136,10 @@ namespace Mvc.App.Controllers
             if (produto is null) return NotFound();
 
             await _produtoService.Remover(id);
+
+            if (OperacaoValida() is false) return View(produto);
+
+            TempData["Sucesso"] = "Produto removido com sucesso!";
 
             return RedirectToAction(nameof(Index));
         }
