@@ -134,7 +134,6 @@ namespace Mvc.App.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
         #region Metodos Auxialiares
 
         public async Task<ProdutoViewModel> ObterProduto(Guid id)

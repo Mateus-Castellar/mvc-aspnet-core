@@ -104,7 +104,6 @@ namespace Mvc.App.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
         [Route("obter-endereco-fornecedor/{id:guid}")]
         public async Task<IActionResult> ObterEndereco(Guid id)
         {
