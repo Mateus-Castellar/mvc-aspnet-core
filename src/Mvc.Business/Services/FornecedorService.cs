@@ -72,5 +72,11 @@ namespace Mvc.Business.Services
 
             await _fornecedorRepository.Remover(id);
         }
+
+        public void Dispose()
+        {
+            _fornecedorRepository?.Dispose();
+            _enderecoRepository?.Dispose();
+        }
     }
 }
