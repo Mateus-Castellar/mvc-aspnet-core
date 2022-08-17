@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Mvc.App.ViewModels;
+using Mvc.Business.Interfaces;
 using System.Diagnostics;
 
 namespace Mvc.App.Controllers
 {
     public class HomeController : BaseController
     {
+        public HomeController(INotificador notificador) : base(notificador) { }
+
         public IActionResult Index()
         {
             return View();

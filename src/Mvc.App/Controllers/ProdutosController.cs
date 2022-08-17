@@ -11,14 +11,16 @@ namespace Mvc.App.Controllers
     {
         private readonly IProdutoRepository _produtoRepository;
         private readonly IFornecedorRepository _fornecedorRepository;
+        private readonly IProdutoService _produtoService;
         private readonly IMapper _mapper;
 
         public ProdutosController(IProdutoRepository produtoRepository, IFornecedorRepository fornecedorRepository,
-            IMapper mapper)
+            IMapper mapper, IProdutoService produtoService, INotificador notificador) : base(notificador)
         {
             _produtoRepository = produtoRepository;
             _fornecedorRepository = fornecedorRepository;
             _mapper = mapper;
+            _produtoService = produtoService;
         }
 
         [Route("lista-de-produtos")]
@@ -61,7 +63,7 @@ namespace Mvc.App.Controllers
             //passa o valor para o campo que é persistido na base de dados
             produtoViewModel.Imagem = imgPrefixo + produtoViewModel.ImagemUpload.FileName;
 
-            await _produtoRepository.Adicionar(_mapper.Map<Produto>(produtoViewModel));
+            await _produtoService.Adicionar(_mapper.Map<Produto>(produtoViewModel));
 
             return RedirectToAction(nameof(Index));
         }
@@ -105,7 +107,7 @@ namespace Mvc.App.Controllers
             produtoAtualizado.Valor = produtoViewModel.Valor;
             produtoAtualizado.Ativo = produtoViewModel.Ativo;
 
-            await _produtoRepository.Atualizar(_mapper.Map<Produto>(produtoAtualizado));
+            await _produtoService.Atualizar(_mapper.Map<Produto>(produtoAtualizado));
 
             return RedirectToAction(nameof(Index));
         }
@@ -129,7 +131,7 @@ namespace Mvc.App.Controllers
 
             if (produto is null) return NotFound();
 
-            await _produtoRepository.Remover(id);
+            await _produtoService.Remover(id);
 
             return RedirectToAction(nameof(Index));
         }
