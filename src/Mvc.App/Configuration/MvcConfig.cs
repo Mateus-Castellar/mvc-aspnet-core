@@ -28,6 +28,7 @@ namespace Mvc.App.Configuration
                 o.ModelBindingMessageProvider.SetValueMustBeANumberAccessor(x => "O campo deve ser numérico.");
                 o.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(x => "Este campo precisa ser preenchido.");
 
+                //validar token a cada acesso para evitar ataques de terceiros
                 o.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             });
 

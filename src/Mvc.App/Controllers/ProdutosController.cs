@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Mvc.App.Extensions;
 using Mvc.App.ViewModels;
 using Mvc.Business.Interfaces;
 using Mvc.Business.Models;
 
 namespace Mvc.App.Controllers
 {
+    [Authorize]
     [Route("Produtos")]
     public class ProdutosController : BaseController
     {
@@ -23,6 +26,7 @@ namespace Mvc.App.Controllers
             _produtoService = produtoService;
         }
 
+        [AllowAnonymous]
         [Route("lista-de-produtos")]
         public async Task<IActionResult> Index()
         {
@@ -30,6 +34,7 @@ namespace Mvc.App.Controllers
                 _produtoRepository.ObterProdutosFornecedores()));
         }
 
+        [AllowAnonymous]
         [Route("detalhes-do-produtos/{id:guid}")]
         public async Task<IActionResult> Details(Guid id)
         {
@@ -40,15 +45,16 @@ namespace Mvc.App.Controllers
             return View(produto);
         }
 
+        [ClaimsAuthorize("Administrador", "Adicionar")]
         [Route("novo-produto")]
         public async Task<IActionResult> Create()
         {
             return View(await PopularFornecedores(new ProdutoViewModel()));
         }
 
+        [ClaimsAuthorize("Administrador", "Adicionar")]
         [Route("novo-produto")]
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProdutoViewModel produtoViewModel)
         {
             produtoViewModel = await PopularFornecedores(produtoViewModel);
@@ -70,6 +76,7 @@ namespace Mvc.App.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [ClaimsAuthorize("Administrador", "Editar")]
         [Route("editar-produto/{id:guid}")]
         public async Task<IActionResult> Edit(Guid id)
         {
@@ -80,9 +87,9 @@ namespace Mvc.App.Controllers
             return View(produto);
         }
 
+        [ClaimsAuthorize("Administrador", "Editar")]
         [Route("editar-produto/{id:guid}")]
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, ProdutoViewModel produtoViewModel)
         {
             if (id != produtoViewModel.Id) return NotFound();
@@ -116,6 +123,7 @@ namespace Mvc.App.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [ClaimsAuthorize("Administrador", "Excluir")]
         [Route("deletar-produto/{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {
@@ -126,9 +134,9 @@ namespace Mvc.App.Controllers
             return View(produto);
         }
 
+        [ClaimsAuthorize("Administrador", "Excluir")]
         [Route("deletar-produto/{id:guid}")]
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var produto = await ObterProduto(id);
