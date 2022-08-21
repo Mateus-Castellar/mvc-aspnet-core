@@ -33,4 +33,37 @@ namespace Mvc.App.Extensions
             output.SuppressOutput();
         }
     }
+
+    [HtmlTargetElement("*", Attributes = "desabilita-link-nome")]
+    [HtmlTargetElement("*", Attributes = "desabilita-link-valor")]
+    public class DesabilitaLinkByClaimTagHelper : TagHelper
+    {
+        private readonly IHttpContextAccessor _contextAccessor;
+
+        public DesabilitaLinkByClaimTagHelper(IHttpContextAccessor contextAccessor)
+        {
+            _contextAccessor = contextAccessor;
+        }
+
+        [HtmlAttributeName("desabilita-link-nome")]
+        public string IdentityClaimName { get; set; }
+
+        [HtmlAttributeName("desabilita-link-valor")]
+        public string IdentityClaimValue { get; set; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+            if (context is null) throw new ArgumentNullException(nameof(context));
+            if (output is null) throw new ArgumentNullException(nameof(output));
+
+            var possuiAcesso = CustomAuthorization
+                .ValidarClaimsUsuario(_contextAccessor.HttpContext, IdentityClaimName, IdentityClaimValue);
+
+            if (possuiAcesso) return;
+
+            output.Attributes.RemoveAll("href");
+            output.Attributes.Add(new TagHelperAttribute("style", "cursor: not-allowed"));
+            output.Attributes.Add(new TagHelperAttribute("title", "você não possui permissão"));
+        }
+    }
 }

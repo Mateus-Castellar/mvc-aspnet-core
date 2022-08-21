@@ -43,7 +43,7 @@
                 <td class="text-right">
                     <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Editar</a>
                     <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Detalhes</a>
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Deletar</a>
+                    <a desabilita-link-nome="Fornecedor" desabilita-link-valor="Excluir" class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Deletar</a>
                 </td>
             </tr>
         }
